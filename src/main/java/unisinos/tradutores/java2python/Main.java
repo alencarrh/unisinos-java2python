@@ -1,17 +1,21 @@
 package unisinos.tradutores.java2python;
 
+import java.io.IOException;
+import java.nio.file.Paths;
+import java.util.List;
+
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
+import unisinos.tradutores.java2python.data.Class;
 import unisinos.tradutores.java2python.gramatica.Java8Lexer;
 import unisinos.tradutores.java2python.gramatica.Java8Parser;
 import unisinos.tradutores.java2python.listener.JavaBaseListenerImpl;
-
-import java.io.IOException;
-import java.nio.file.Paths;
+import unisinos.tradutores.java2python.translator.Translator;
+import unisinos.tradutores.java2python.translator.python.PythonTranslator;
 
 public class Main {
 
@@ -36,7 +40,11 @@ public class Main {
         JavaBaseListenerImpl extractor = new JavaBaseListenerImpl();
         walker.walk(extractor, tree); // initiate walk of tree with listener
 
+        List<Class> classes = extractor.build();
+
+        Translator translator = new PythonTranslator();
+        translator.setClasses(classes);
+
+        translator.translate();
     }
-
-
 }
