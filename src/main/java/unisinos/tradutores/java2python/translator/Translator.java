@@ -4,14 +4,8 @@ import java.util.List;
 
 import unisinos.tradutores.java2python.data.Class;
 
-public interface Translator {
+public interface Translator extends BaseTranslator {
 
     void setClasses(List<Class> classes);
-
-    void setOutput(StringBuilder output);
-
-    List<Class> getClasses();
-
-    void translate();
-
+    
 }

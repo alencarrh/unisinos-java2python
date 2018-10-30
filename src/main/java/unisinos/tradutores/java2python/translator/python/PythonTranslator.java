@@ -28,8 +28,8 @@ public class PythonTranslator implements Translator {
     }
 
     @Override
-    public List<Class> getClasses() {
-        return this.classes;
+    public StringBuilder getOutput() {
+        return this.output;
     }
 
     @Override

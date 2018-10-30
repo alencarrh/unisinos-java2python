@@ -4,9 +4,11 @@ import java.util.List;
 
 import unisinos.tradutores.java2python.data.Class;
 import unisinos.tradutores.java2python.translator.ClassTranslator;
+import unisinos.tradutores.java2python.translator.MethodTranslator;
 
 public class PythonClassTranslator implements ClassTranslator {
 
+    private MethodTranslator translator;
     private List<Class> classes;
     private StringBuilder output;
 
@@ -21,7 +23,12 @@ public class PythonClassTranslator implements ClassTranslator {
     }
 
     @Override
+    public StringBuilder getOutput() {
+        return this.output;
+    }
+
+    @Override
     public void translate() {
-        
+
     }
 }
