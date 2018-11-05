@@ -31,6 +31,9 @@ public class PythonMethodTranslator implements MethodTranslator {
 
     @Override
     public void translate() {
-
+        //TODO tratar nome e modifier do método.
+        // Se for private, adicionar "__" na frente do nome, caso contrário, só utilizar o nome
+        // O tipo de retorno pode ser ignorado.
+        // Também adicionar a lista de parametros
     }
 }
