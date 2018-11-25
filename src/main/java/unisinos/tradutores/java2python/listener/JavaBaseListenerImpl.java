@@ -21,27 +21,27 @@ public class JavaBaseListenerImpl extends Java8BaseListener {
 
     @Override
     public void enterNormalClassDeclaration(final NormalClassDeclarationContext ctx) {
-        if (currentClass != null) {
-            classes.add(currentClass.body(currentBodyClass.build()).build());
-        }
-        currentClass = Class.builder().enumClass(false).name(ctx.children.get(2).getText());
+//        if (currentClass != null) {
+//            classes.add(currentClass.body(currentBodyClass.build()).build());
+//        }
+//        currentClass = Class.builder().enumClass(false).name(ctx.children.get(2).getText());
         System.out.println("Classe normal encontrada: " + ctx.children.get(2).getText());
     }
 
     @Override
     public void enterEnumDeclaration(final EnumDeclarationContext ctx) {
-        if (currentClass != null) {
-            classes.add(currentClass.body(currentBodyClass.build()).build());
-        }
-        currentClass = Class.builder().enumClass(true).name(ctx.children.get(1).getText());
+//        if (currentClass != null) {
+//            classes.add(currentClass.body(currentBodyClass.build()).build());
+//        }
+//        currentClass = Class.builder().enumClass(true).name(ctx.children.get(1).getText());
         System.out.println("Enum encontrada: " + ctx.children.get(1).getText());
     }
 
     @Override
     public void enterMethodDeclarator(Java8Parser.MethodDeclaratorContext ctx) {
-//        System.out.println("enterMethodDeclarator:  " + ctx.getText());
-//        System.out.println("    getChildCount():  " + ctx.getChildCount());
-//        System.out.println("    children:  " + ctx.children);
+        System.out.println("enterMethodDeclarator:  " + ctx.getText());
+        System.out.println("    getChildCount():  " + ctx.getChildCount());
+        System.out.println("    children:  " + ctx.children);
 
         //Criar métodos aqui
 
@@ -49,7 +49,7 @@ public class JavaBaseListenerImpl extends Java8BaseListener {
 
     @Override
     public void enterMethodInvocation(Java8Parser.MethodInvocationContext ctx) {
-//        System.out.println("enterMethodInvocation:  " + ctx.getText());
+        System.out.println("enterMethodInvocation:  " + ctx.getText());
 
         //Criar um comando/expressão aqui
     }
@@ -69,42 +69,47 @@ public class JavaBaseListenerImpl extends Java8BaseListener {
 
     @Override
     public void enterForStatement(Java8Parser.ForStatementContext ctx) {
+        System.out.println("enterForStatement:  " + ctx.getText());
     }
 
     @Override
     public void enterForStatementNoShortIf(Java8Parser.ForStatementNoShortIfContext ctx) {
+        System.out.println("enterForStatementNoShortIf:  " + ctx.getText());
     }
 
     @Override
     public void enterWhileStatement(Java8Parser.WhileStatementContext ctx) {
+        System.out.println("enterWhileStatement:  " + ctx.getText());
     }
 
     @Override
     public void enterWhileStatementNoShortIf(Java8Parser.WhileStatementNoShortIfContext ctx) {
-    }
-
-    @Override
-    public void enterDoStatement(Java8Parser.DoStatementContext ctx) {
+        System.out.println("enterWhileStatementNoShortIf:  " + ctx.getText());
     }
 
     @Override
     public void enterIfThenStatement(Java8Parser.IfThenStatementContext ctx) {
+        System.out.println("enterIfThenStatement:  " + ctx.getText());
     }
 
     @Override
     public void enterIfThenElseStatement(Java8Parser.IfThenElseStatementContext ctx) {
+        System.out.println("enterIfThenElseStatement:  " + ctx.getText());
     }
 
     @Override
     public void enterIfThenElseStatementNoShortIf(Java8Parser.IfThenElseStatementNoShortIfContext ctx) {
+        System.out.println("enterIfThenElseStatement:  " + ctx.getText());
     }
 
     @Override
     public void enterCatches(Java8Parser.CatchesContext ctx) {
+
     }
 
     @Override
     public void enterConditionalExpression(Java8Parser.ConditionalExpressionContext ctx) {
+
     }
 
     @Override

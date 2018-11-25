@@ -10,6 +10,38 @@ public class TesteClass {
         return "teste";
     }
 
+    public void method3() {
+        int a = 1;
+        int b = 10;
+        if (a == 1) {
+            a = a * 2;
+        }else{
+            a = a + 1;
+        }
+
+        if (a == b) {
+            b = b * 3;
+            if (b == 10) {
+                a = 2;
+            }
+        }
+    }
+
+    public void method4(String a, int b, int c) {
+        if (a.equals("b")) {
+            for (int i = 0; i < b; i++) {
+                c = c + b;
+            }
+        }
+
+        int i = c;
+
+        while (i > 0) {
+            b = b - c;
+            i = i - b;
+        }
+
+    }
 }
 
 enum TipoTeste {
