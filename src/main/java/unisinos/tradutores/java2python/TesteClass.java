@@ -27,7 +27,7 @@ public class TesteClass {
         }
     }
 
-    public void method4(String a, int b, int c) {
+    public void method4(String a, int b, int c, Double d, TipoTeste tipo){
         if (a.equals("b")) {
             for (int i = 0; i < b; i++) {
                 c = c + b;
