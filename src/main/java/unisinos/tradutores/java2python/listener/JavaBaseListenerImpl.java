@@ -46,7 +46,6 @@ public class JavaBaseListenerImpl extends Java8BaseListener {
 //        System.out.println("    getChildCount():  " + ctx.getChildCount());
         System.out.print("\t\tDETAILS: ");
         printa_children(ctx.children);
-        System.out.println();
 
         //Criar métodos aqui
 
@@ -54,13 +53,13 @@ public class JavaBaseListenerImpl extends Java8BaseListener {
 
     private void printa_children(final List<ParseTree> children) {
         children.forEach(this::printa_child);
+        System.out.println();
     }
 
 
     private void printa_child(final ParseTree c) {
         if (c instanceof TerminalNodeImpl) {
             System.out.print(c.getText() + " ");
-            return;
         } else {
             for (int i = 0; i < c.getChildCount(); i++) {
                 printa_child(c.getChild(i));
@@ -124,57 +123,83 @@ public class JavaBaseListenerImpl extends Java8BaseListener {
 
     @Override
     public void enterMethodInvocation(Java8Parser.MethodInvocationContext ctx) {
-        System.out.println("enterMethodInvocation:  " + ctx.getText());
+        System.out.println("\tMETHOD CALL:  " + ctx.getText());
+        System.out.print("\t\tDETAILS: ");
+        printa_children(ctx.children);
 
         //Criar um comando/expressão aqui
     }
 
     @Override
     public void enterMethodInvocation_lf_primary(Java8Parser.MethodInvocation_lf_primaryContext ctx) {
-        System.out.println("enterMethodInvocation:  " + ctx.getText());
+        System.out.println("\tMETHOD CALL:  " + ctx.getText());
+        System.out.print("\t\tDETAILS: ");
+        printa_children(ctx.children);
+
     }
 
     @Override
     public void enterMethodInvocation_lfno_primary(Java8Parser.MethodInvocation_lfno_primaryContext ctx) {
+        System.out.println("\tMETHOD CALL:  " + ctx.getText());
+        System.out.print("\t\tDETAILS: ");
+        printa_children(ctx.children);
     }
 
     @Override
     public void enterBlockStatements(Java8Parser.BlockStatementsContext ctx) {
+        System.out.println("\tBLOCK:  " + ctx.getText());
+        System.out.print("\t\tDETAILS: ");
+        printa_children(ctx.children);
     }
 
     @Override
     public void enterForStatement(Java8Parser.ForStatementContext ctx) {
-        System.out.println("enterForStatement:  " + ctx.getText());
+        System.out.println("\tFOR:  " + ctx.getText());
+        System.out.print("\t\tDETAILS: ");
+        printa_children(ctx.children);
     }
 
     @Override
     public void enterForStatementNoShortIf(Java8Parser.ForStatementNoShortIfContext ctx) {
-        System.out.println("enterForStatementNoShortIf:  " + ctx.getText());
+        System.out.println("\tWHILE:  " + ctx.getText());
+        System.out.print("\t\tDETAILS: ");
+        printa_children(ctx.children);
     }
 
     @Override
     public void enterWhileStatement(Java8Parser.WhileStatementContext ctx) {
-        System.out.println("enterWhileStatement:  " + ctx.getText());
+        System.out.println("\tWHILE:  " + ctx.getText());
+        System.out.print("\t\tDETAILS: ");
+        printa_children(ctx.children);
     }
 
     @Override
     public void enterWhileStatementNoShortIf(Java8Parser.WhileStatementNoShortIfContext ctx) {
-        System.out.println("enterWhileStatementNoShortIf:  " + ctx.getText());
+        System.out.println("\tWHILE:  " + ctx.getText());
+        System.out.print("\t\tDETAILS: ");
+        printa_children(ctx.children);
     }
 
     @Override
     public void enterIfThenStatement(Java8Parser.IfThenStatementContext ctx) {
-        System.out.println("enterIfThenStatement:  " + ctx.getText());
+        System.out.println("\tIF THEN:  " + ctx.getText());
+        System.out.print("\t\tDETAILS: ");
+        printa_children(ctx.children);
+
     }
 
     @Override
     public void enterIfThenElseStatement(Java8Parser.IfThenElseStatementContext ctx) {
-        System.out.println("enterIfThenElseStatement:  " + ctx.getText());
+        System.out.println("\tIF THEN ELSE:  " + ctx.getText());
+        System.out.print("\t\tDETAILS: ");
+        printa_children(ctx.children);
     }
 
     @Override
     public void enterIfThenElseStatementNoShortIf(Java8Parser.IfThenElseStatementNoShortIfContext ctx) {
-        System.out.println("enterIfThenElseStatement:  " + ctx.getText());
+        System.out.println("\tIF THEN ELSE:  " + ctx.getText());
+        System.out.print("\t\tDETAILS: ");
+        printa_children(ctx.children);
     }
 
     @Override
