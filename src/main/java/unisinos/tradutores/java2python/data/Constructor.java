@@ -2,10 +2,12 @@ package unisinos.tradutores.java2python.data;
 
 import java.util.List;
 
+import lombok.Builder;
 import lombok.Data;
 import lombok.Singular;
 
 @Data
+@Builder
 public class Constructor {
 
     private final String name;

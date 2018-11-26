@@ -3,6 +3,8 @@ package unisinos.tradutores.java2python.listener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNodeImpl;
@@ -10,9 +12,13 @@ import org.antlr.v4.runtime.tree.TerminalNodeImpl;
 import lombok.Getter;
 import unisinos.tradutores.java2python.data.Class;
 import unisinos.tradutores.java2python.data.ClassBody;
+import unisinos.tradutores.java2python.data.Constructor;
+import unisinos.tradutores.java2python.data.Method;
+import unisinos.tradutores.java2python.domain.VariableType;
 import unisinos.tradutores.java2python.gramatica.Java8BaseListener;
 import unisinos.tradutores.java2python.gramatica.Java8Parser;
 import unisinos.tradutores.java2python.gramatica.Java8Parser.EnumDeclarationContext;
+import unisinos.tradutores.java2python.gramatica.Java8Parser.FormalParameterListContext;
 import unisinos.tradutores.java2python.gramatica.Java8Parser.NormalClassDeclarationContext;
 
 @Getter
@@ -21,34 +27,76 @@ public class JavaBaseListenerImpl extends Java8BaseListener {
     private List<Class> classes = new ArrayList<>();
     private Class.ClassBuilder currentClass;
     private ClassBody.ClassBodyBuilder currentBodyClass;
+    private Constructor.ConstructorBuilder currentConstructor;
+    private Method.MethodBuilder currentMethod;
 
     @Override
     public void enterNormalClassDeclaration(final NormalClassDeclarationContext ctx) {
-//        if (currentClass != null) {
-//            classes.add(currentClass.body(currentBodyClass.build()).build());
-//        }
-//        currentClass = Class.builder().enumClass(false).name(ctx.children.get(2).getText());
+        if (currentClass != null) {
+            classes.add(currentClass.body(currentBodyClass.build()).build());
+        }
+        currentClass = Class.builder().enumClass(false).name(ctx.children.get(2).getText());
+        currentBodyClass = ClassBody.builder();
         System.out.println("CLASSE: " + ctx.children.get(2).getText());
     }
 
     @Override
     public void enterEnumDeclaration(final EnumDeclarationContext ctx) {
-//        if (currentClass != null) {
-//            classes.add(currentClass.body(currentBodyClass.build()).build());
-//        }
-//        currentClass = Class.builder().enumClass(true).name(ctx.children.get(1).getText());
+        if (currentClass != null) {
+            classes.add(currentClass.body(currentBodyClass.build()).build());
+        }
+        currentClass = Class.builder().enumClass(true).name(ctx.children.get(1).getText());
         System.out.println("CLASSE ENUM: " + ctx.children.get(1).getText());
     }
 
     @Override
     public void enterMethodDeclarator(Java8Parser.MethodDeclaratorContext ctx) {
+
+        //TODO comentar system.outs e printa_children
         System.out.println("\tMETHOD:  " + ctx.children.get(0).getText());
-//        System.out.println("    getChildCount():  " + ctx.getChildCount());
         System.out.print("\t\tDETAILS: ");
         printa_children(ctx.children);
 
-        //Criar métodos aqui
+        if (currentMethod != null) {
+            currentBodyClass.method(currentMethod.build());
+        }
 
+        final boolean modifier = ctx.getParent().getParent().getChild(0).getText().equals("public");
+        final VariableType returnType = VariableType
+            .fromText(ctx.getParent().getParent().getChild(1).getChild(0).getText());
+
+        currentMethod = Method.builder()
+            .modifier(modifier)
+            .returnType(returnType)
+            .name(ctx.getChild(0).getText())
+        ;
+
+        if (ctx.getChild(2) instanceof FormalParameterListContext) {
+            forParentChildren(ctx.getChild(2), child -> {
+                // TODO Criar 'Param' e adicionar ao método
+                // O que vai ter aqui?
+                // Para o 'method4'
+                // 1 - String
+                // 2 - a
+                // 3 ,
+                // 4 - int
+                // 5 - b
+                // 6 - ,
+                // 7 - ...
+                System.out.println("param: " + child);
+            });
+        }
+    }
+
+    private void forParentChildren(final ParseTree parent, final Consumer<TerminalNodeImpl> consumer) {
+        for (int i = 0; i < parent.getChildCount(); i++) {
+            ParseTree child = parent.getChild(i);
+            if (child instanceof TerminalNodeImpl) {
+                consumer.accept((TerminalNodeImpl) child);
+                continue;
+            }
+            forParentChildren(child, consumer);
+        }
     }
 
     private void printa_children(final List<ParseTree> children) {
