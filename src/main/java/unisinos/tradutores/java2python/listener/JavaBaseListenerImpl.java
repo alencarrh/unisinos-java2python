@@ -4,7 +4,6 @@ package unisinos.tradutores.java2python.listener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
-import java.util.function.Function;
 
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNodeImpl;
@@ -72,7 +71,7 @@ public class JavaBaseListenerImpl extends Java8BaseListener {
         ;
 
         if (ctx.getChild(2) instanceof FormalParameterListContext) {
-            forParentChildren(ctx.getChild(2), child -> {
+            forChildrenOf(ctx.getChild(2), child -> {
                 // TODO Criar 'Param' e adicionar ao método
                 // O que vai ter aqui?
                 // Para o 'method4'
@@ -88,14 +87,14 @@ public class JavaBaseListenerImpl extends Java8BaseListener {
         }
     }
 
-    private void forParentChildren(final ParseTree parent, final Consumer<TerminalNodeImpl> consumer) {
+    private void forChildrenOf(final ParseTree parent, final Consumer<TerminalNodeImpl> consumer) {
         for (int i = 0; i < parent.getChildCount(); i++) {
             ParseTree child = parent.getChild(i);
             if (child instanceof TerminalNodeImpl) {
                 consumer.accept((TerminalNodeImpl) child);
                 continue;
             }
-            forParentChildren(child, consumer);
+            forChildrenOf(child, consumer);
         }
     }
 
