@@ -3,7 +3,6 @@ package unisinos.tradutores.java2python.domain;
 import static java.util.Arrays.asList;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
-import java.util.Arrays;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
@@ -26,6 +25,7 @@ public enum VariableType {
         this.texts = asList(texts);
     }
 
+    private static final List<String> primitiveValues = asList("int", "boolean", "double", "float", "long", "short");
     private final List<String> texts;
 
     public static VariableType fromText(final String fromText) {
@@ -45,4 +45,7 @@ public enum VariableType {
         return VariableType.OBJECT;
     }
 
+    public static boolean isPrimitiveType(String type) {
+        return primitiveValues.stream().anyMatch(p -> p.equals(type));
+    }
 }

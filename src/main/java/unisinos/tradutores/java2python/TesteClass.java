@@ -31,6 +31,8 @@ public class TesteClass {
         if (a.equals("b")) {
             for (int i = 0; i < b; i++) {
                 c = c + b;
+                int x = 1;
+                x = c * -2;
             }
         }
 

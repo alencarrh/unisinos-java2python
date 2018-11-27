@@ -1,11 +1,12 @@
 package unisinos.tradutores.java2python.data;
 
+import lombok.Builder;
 import lombok.Data;
-import lombok.ToString;
 
 @Data
-public class Expression {
+@Builder
+public class Expression implements GenericStatement {
 
-    //TODO definir valores desta classe
+    private final String expression;
 
 }

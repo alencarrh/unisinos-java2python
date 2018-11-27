@@ -6,7 +6,7 @@ import unisinos.tradutores.java2python.domain.VariableType;
 
 @Data
 @Builder
-public class Param {
+public class Param implements GenericStatement{
 
     private final String name;
     private final VariableType type;
