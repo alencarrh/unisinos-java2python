@@ -1,6 +1,8 @@
 package unisinos.tradutores.java2python.listener;
 
 
+import static java.util.Objects.nonNull;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -13,6 +15,7 @@ import unisinos.tradutores.java2python.data.Class;
 import unisinos.tradutores.java2python.data.ClassBody;
 import unisinos.tradutores.java2python.data.Constructor;
 import unisinos.tradutores.java2python.data.Method;
+import unisinos.tradutores.java2python.data.Param;
 import unisinos.tradutores.java2python.domain.VariableType;
 import unisinos.tradutores.java2python.gramatica.Java8BaseListener;
 import unisinos.tradutores.java2python.gramatica.Java8Parser;
@@ -31,7 +34,10 @@ public class JavaBaseListenerImpl extends Java8BaseListener {
 
     @Override
     public void enterNormalClassDeclaration(final NormalClassDeclarationContext ctx) {
-        if (currentClass != null) {
+        if (nonNull(currentMethod)) {
+            currentBodyClass.method(currentMethod.build());
+        }
+        if (nonNull(currentClass)) {
             classes.add(currentClass.body(currentBodyClass.build()).build());
         }
         currentClass = Class.builder().enumClass(false).name(ctx.children.get(2).getText());
@@ -41,7 +47,10 @@ public class JavaBaseListenerImpl extends Java8BaseListener {
 
     @Override
     public void enterEnumDeclaration(final EnumDeclarationContext ctx) {
-        if (currentClass != null) {
+        if (nonNull(currentMethod)) {
+            currentBodyClass.method(currentMethod.build());
+        }
+        if (nonNull(currentClass)) {
             classes.add(currentClass.body(currentBodyClass.build()).build());
         }
         currentClass = Class.builder().enumClass(true).name(ctx.children.get(1).getText());
@@ -56,7 +65,7 @@ public class JavaBaseListenerImpl extends Java8BaseListener {
         System.out.print("\t\tDETAILS: ");
         printa_children(ctx.children);
 
-        if (currentMethod != null) {
+        if (nonNull(currentMethod)) {
             currentBodyClass.method(currentMethod.build());
         }
 
@@ -71,7 +80,17 @@ public class JavaBaseListenerImpl extends Java8BaseListener {
         ;
 
         if (ctx.getChild(2) instanceof FormalParameterListContext) {
+            final Param.ParamBuilder param = Param.builder();
+            final List<String> tempValues = new ArrayList();
             forChildrenOf(ctx.getChild(2), child -> {
+                if (child.getText().equals(",")) {
+                    currentMethod
+                        .param(param.name(tempValues.get(1)).type(VariableType.fromText(tempValues.get(0))).build());
+                    tempValues.clear();
+                } else {
+                    tempValues.add(child.getText());
+                }
+
                 // TODO Criar 'Param' e adicionar ao método
                 // O que vai ter aqui?
                 // Para o 'method4'
@@ -82,8 +101,8 @@ public class JavaBaseListenerImpl extends Java8BaseListener {
                 // 5 - b
                 // 6 - ,
                 // 7 - ...
-                System.out.println("param: " + child);
             });
+            currentMethod.param(param.name(tempValues.get(0)).type(VariableType.fromText(tempValues.get(1))).build());
         }
     }
 
@@ -264,6 +283,12 @@ public class JavaBaseListenerImpl extends Java8BaseListener {
     }
 
     public List<Class> build() {
+        //adiciona os últimos valores para a última classe
+
+        if (nonNull(currentClass)) {
+            classes.add(currentClass.body(currentBodyClass.build()).build());
+        }
+        System.out.println(classes);
         return classes;
     }
 }

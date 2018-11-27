@@ -1,9 +1,11 @@
 package unisinos.tradutores.java2python.data;
 
+import lombok.Builder;
 import lombok.Data;
 import unisinos.tradutores.java2python.domain.VariableType;
 
 @Data
+@Builder
 public class Param {
 
     private final String name;
