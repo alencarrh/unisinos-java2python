@@ -42,6 +42,7 @@ public class JavaBaseListenerImpl extends Java8BaseListener {
     private ClassBody.ClassBodyBuilder currentBodyClass;
     private Constructor.ConstructorBuilder currentConstructor;
     private Method.MethodBuilder currentMethod;
+//    private Scope currentScope; //vai lidar com o scopo atual, então vai adicionar sempre aqui e essa classe sabe quem é o scope
 
     @Override
     public void enterNormalClassDeclaration(final NormalClassDeclarationContext ctx) {
@@ -215,7 +216,8 @@ public class JavaBaseListenerImpl extends Java8BaseListener {
             .body(forBody.build())
             .build();
 
-        System.out.println("\tFOR:  " + forRepetitionStructure);
+        currentMethod.
+            System.out.println("\tFOR:  " + forRepetitionStructure);
     }
 
     @Override
