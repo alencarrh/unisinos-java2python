@@ -11,4 +11,9 @@ public class Variable extends Element {
     private final VariableType type;
     private final String name;
 
+    @Override
+    public Element toggleScope() {
+        return this;
+    }
+
 }

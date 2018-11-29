@@ -32,16 +32,19 @@ public class ForBuilder {
             .type(VariableType.fromText(initContext.getChild(0).getChild(0).getText()))
             .name(initContext.getChild(0).getChild(1).getChild(0).getChild(0).getText())
             .initValue(initContext.getChild(0).getChild(1).getChild(0).getChild(2).getText())
+            .scope(scope.currentLevel())
             .build();
 
         final ExpressionContext expressionContext = (ExpressionContext) ctx.getChild(0).getChild(4);
         final Expression forCondition = Expression.builder()
             .expression(expressionContext.getText())
+            .scope(scope.currentLevel())
             .build();
 
         final ForUpdateContext updateContext = (ForUpdateContext) ctx.getChild(0).getChild(6);
         final Expression forUpdate = Expression.builder()
             .expression(updateContext.getText())
+            .scope(scope.currentLevel())
             .build();
 
         BlockStatementsContext statementContext = (BlockStatementsContext) ctx.getChild(0).getChild(8).getChild(0)
@@ -58,13 +61,14 @@ public class ForBuilder {
             final String[] expressionParts = expression.split(" ");
 
             if (expressionParts.length > 1 && expressionParts[1].equals("=")) {
-                genericExpression = Expression.builder().expression(expression).build();
+                genericExpression = Expression.builder().expression(expression).scope(scope.currentLevel()).build();
             } else if (expressionParts.length > 1 && expressionParts[2].equals("=")) {
                 //é um Param
                 genericExpression = Param.builder()
                     .type(VariableType.fromText(expressionParts[0]))
                     .name(expressionParts[1])
                     .initValue(Arrays.stream(expressionParts).skip(0).skip(1).skip(2).toArray(String[]::new))
+                    .scope(scope.currentLevel())
                     .build();
 
             }

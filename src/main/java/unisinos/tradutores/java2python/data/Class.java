@@ -30,7 +30,7 @@ public class Class {
         if (isNull(this.atr)) {
             this.atr = new ArrayList<>();
         }
-        this.atr.add(getSpaces(1) + name + " = None");
+        this.atr.add(getSpaces(1, false) + name + " = None");
     }
 
     public String toString() {
@@ -41,12 +41,17 @@ public class Class {
                 result.append(a).append("\n");
             });
         }
+        if (nonNull(elements)) {
+            this.elements.forEach(e -> {
+                result.append(e.toString()).append("\n");
+            });
+        }
 
-        this.elements.forEach(e -> {
-            result.append(e.toString()).append("\n");
-        });
-
-        return result.toString();
+        return result.toString()
+            .replace("null", "None")
+            .replace("--", "-= 1")
+            .replace("++", "+= 1")
+            .replace("System.out.println(", "print(");
     }
 
 }

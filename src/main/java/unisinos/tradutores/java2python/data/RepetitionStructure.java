@@ -16,17 +16,29 @@ public class RepetitionStructure extends Element {
     private final GenericBody body;
     private final Integer scope;
 
+    private boolean disableScope;
+
+    @Override
+    public Element toggleScope() {
+        this.disableScope = !disableScope;
+        return this;
+    }
+
     public String toString() {
-        final StringBuilder body = new StringBuilder();
-        if (nonNull(this.body)) {
-            this.body.getExpressions().forEach(a -> {
-                body.append(Space.getSpaces(scope)).append(a).append("\n");
-            });
+        final StringBuilder sb = new StringBuilder();
+
+        sb.append("\n");
+        if (nonNull(initVariables)) {
+            sb.append(initVariables.toString()).append("\n");
+        }
+        sb.append(Space.getSpaces(scope, disableScope)).append("while (");
+        sb.append(keepRunningCondition.toggleScope().toString()).append("):");
+//        sb.append(Space.getSpaces(disableScope ? scope + 1 : 1, false)).append(body.toString());
+        if (nonNull(updateVariables)) {
+            sb.append("\n").append(Space.getSpaces(disableScope ? scope + 1 : 1, false))
+                .append(updateVariables.toString());
         }
 
-        return this.initVariables.getName() + " = " + this.initVariables.getInitValue() + "\n" +
-            "while" + this.getKeepRunningCondition() +
-            body +
-            getUpdateVariables().getExpression();
+        return sb.toString();
     }
 }

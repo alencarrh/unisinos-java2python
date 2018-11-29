@@ -37,10 +37,10 @@ public class MethodBuilder {
                     temp.add(child.getText());
                     return;
                 }
-                methodBuilder.param(param.name(temp.get(1)).type(VariableType.fromText(temp.get(0))).build());
+                methodBuilder.param(param.name(temp.get(1)).type(VariableType.fromText(temp.get(0))).scope(scope.currentLevel()).build());
                 temp.clear();
             });
-            methodBuilder.param(param.name(temp.get(1)).type(VariableType.fromText(temp.get(0))).build());
+            methodBuilder.param(param.name(temp.get(1)).type(VariableType.fromText(temp.get(0))).scope(scope.currentLevel()).build());
         }
 
         final Method method = methodBuilder.build();

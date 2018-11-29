@@ -6,16 +6,27 @@ public class TesteClass {
     private int quantidade;
 
     public void method1() {
-        System.out.println("TESTE");
+        int a = 1;
+        int b = 10;
+
+        for (int i = 50; i < 0; i += 1) {
+            a = a + b;
+        }
     }
 
-    public String method2() {
+    public String method2(int a, int b) {
+
+        while (a < b) {
+            a += 1;
+        }
+
+        System.out.println("teste123");
+
         return "teste";
     }
 
-    public void method3() {
-        int a = 1;
-        int b = 10;
+    public void method3(int a, int b) {
+
         if (a == 1) {
             a = a * 2;
         }
@@ -35,7 +46,9 @@ public class TesteClass {
         }
     }
 
+
     public void method4(String a, int b, int c, Double d, TipoTeste tipo) {
+        int g = c;
         if (c == b) {
             for (int i = 0; i < b; i++) {
                 c = c + b;
@@ -47,11 +60,9 @@ public class TesteClass {
             }
         }
 
-        int i = c;
-
-        while (i > 0) {
+        while (g > 0) {
             b = b - c;
-            i = i - b;
+            g = g - b;
         }
 
     }

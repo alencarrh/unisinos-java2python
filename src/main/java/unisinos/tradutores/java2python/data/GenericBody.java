@@ -23,4 +23,9 @@ public class GenericBody extends Element {
 
         return sb.toString();
     }
+
+    @Override
+    public Element toggleScope() {
+        return this;
+    }
 }

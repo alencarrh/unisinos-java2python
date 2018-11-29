@@ -2,6 +2,8 @@ package unisinos.tradutores.java2python.data;
 
 import static java.util.Objects.nonNull;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import lombok.Builder;
@@ -26,28 +28,36 @@ public class Method extends Element {
     private final List<Expression> expressions;
     private final Integer scope = 1;
 
+    private boolean disableScope = false;
+
+
+    @Override
+    public Element toggleScope() {
+        this.disableScope = !this.disableScope;
+        return this;
+    }
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder();
-        sb.append(Space.getSpaces(scope)).append("def ");
+        final StringBuilder sb = new StringBuilder("\n");
+        sb.append(Space.getSpaces(scope, disableScope)).append("def ");
         if (!modifier) {
             sb.append("__");
         }
         sb.append(name).append("(");
 
         if (nonNull(params) && !params.isEmpty()) {
-            sb.append(params.get(0).toString());
+            sb.append(params.get(0).toggleScope().toString());
 
-            params.forEach(param -> {
-                sb.append(", ").append(param.toString());
-            });
+            for (int i = 1; i < params.size(); i++) {
+                sb.append(", ").append(params.get(i).toggleScope().toString());
+            }
         }
 
-        sb.append("):\n");
+        sb.append("): # returns ").append(returnType);
 
         expressions.forEach(e -> {
-            sb.append(Space.getSpaces(scope + 1)).append(e.getExpression()).append("\n");
+            sb.append(Space.getSpaces(scope + 1, disableScope)).append(e.getExpression().toString()).append("\n");
         });
 
         return sb.toString();
