@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNodeImpl;
-
 import lombok.Getter;
 import unisinos.tradutores.java2python.data.Class;
 import unisinos.tradutores.java2python.data.Element;
@@ -17,6 +16,7 @@ import unisinos.tradutores.java2python.gramatica.Java8Parser.EnumDeclarationCont
 import unisinos.tradutores.java2python.gramatica.Java8Parser.ForStatementContext;
 import unisinos.tradutores.java2python.gramatica.Java8Parser.MethodDeclarationContext;
 import unisinos.tradutores.java2python.gramatica.Java8Parser.NormalClassDeclarationContext;
+import unisinos.tradutores.java2python.gramatica.Java8Parser.FieldDeclarationContext;
 import unisinos.tradutores.java2python.listener.builder.ClassBuilder;
 import unisinos.tradutores.java2python.listener.builder.ForBuilder;
 import unisinos.tradutores.java2python.listener.builder.IfBuilder;
@@ -37,6 +37,11 @@ public class JavaBaseListenerImpl extends Java8BaseListener {
     @Override
     public void enterNormalClassDeclaration(final NormalClassDeclarationContext ctx) {
         classBuilder.build(ctx, result -> {
+            for (int i=1; i < ctx.getChild(3).getChildCount() -1; i++){
+                if(ctx.getChild(3).getChild(i).getChild(0).getChild(0) instanceof FieldDeclarationContext){
+                    result.addAtr(ctx.getChild(3).getChild(i).getChild(0).getChild(0).getChild(2).getText());
+                }
+            }
             classes.add(result);
             System.out.println("CLASSE: " + result);
         });
@@ -52,6 +57,9 @@ public class JavaBaseListenerImpl extends Java8BaseListener {
         this.scope.up();
     }
 
+    @Override public void enterFieldDeclaration(Java8Parser.FieldDeclarationContext ctx) {
+        //System.out.println(ctx);
+    }
 
     @Override
     public void enterMethodDeclarator(Java8Parser.MethodDeclaratorContext ctx) {

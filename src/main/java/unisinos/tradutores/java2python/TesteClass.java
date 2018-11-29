@@ -2,6 +2,9 @@ package unisinos.tradutores.java2python;
 
 public class TesteClass {
 
+    private String nome;
+    private int quantidade;
+
     public void method1() {
         System.out.println("TESTE");
     }
