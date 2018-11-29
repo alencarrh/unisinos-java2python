@@ -14,8 +14,6 @@ import unisinos.tradutores.java2python.data.Class;
 import unisinos.tradutores.java2python.gramatica.Java8Lexer;
 import unisinos.tradutores.java2python.gramatica.Java8Parser;
 import unisinos.tradutores.java2python.listener.JavaBaseListenerImpl;
-import unisinos.tradutores.java2python.translator.Translator;
-import unisinos.tradutores.java2python.translator.python.PythonTranslator;
 
 public class Main {
 

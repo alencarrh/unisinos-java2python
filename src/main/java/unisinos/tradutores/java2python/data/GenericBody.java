@@ -8,7 +8,7 @@ import lombok.Singular;
 
 @Data
 @Builder
-public class GenericBody {
+public class GenericBody extends Element {
 
     @Singular
     private final List<GenericStatement> expressoins;

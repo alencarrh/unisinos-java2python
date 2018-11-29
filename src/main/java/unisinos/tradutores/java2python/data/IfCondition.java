@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class IfCondition {
+public class IfCondition extends Element {
 
 //    public final String condition;
 //    public final Body body

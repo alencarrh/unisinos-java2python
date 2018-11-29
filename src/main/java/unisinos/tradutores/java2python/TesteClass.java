@@ -15,7 +15,7 @@ public class TesteClass {
         int b = 10;
         if (a == 1) {
             a = a * 2;
-        }else{
+        } else {
             a = a + 1;
         }
 
@@ -27,11 +27,14 @@ public class TesteClass {
         }
     }
 
-    public void method4(String a, int b, int c, Double d, TipoTeste tipo){
+    public void method4(String a, int b, int c, Double d, TipoTeste tipo) {
         if (a.equals("b")) {
             for (int i = 0; i < b; i++) {
                 c = c + b;
                 int x = 1;
+                for (int l = 0; l < i; l++) {
+                    b += 1;
+                }
                 x = c * -2;
             }
         }

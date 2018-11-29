@@ -15,14 +15,14 @@ import org.antlr.v4.runtime.tree.TerminalNodeImpl;
 
 import lombok.Getter;
 import unisinos.tradutores.java2python.data.Class;
-import unisinos.tradutores.java2python.data.ClassBody;
-import unisinos.tradutores.java2python.data.Constructor;
+import unisinos.tradutores.java2python.data.Element;
 import unisinos.tradutores.java2python.data.Expression;
 import unisinos.tradutores.java2python.data.GenericBody;
 import unisinos.tradutores.java2python.data.GenericStatement;
 import unisinos.tradutores.java2python.data.Method;
 import unisinos.tradutores.java2python.data.Param;
 import unisinos.tradutores.java2python.data.RepetitionStructure;
+import unisinos.tradutores.java2python.domain.ScopeLevel;
 import unisinos.tradutores.java2python.domain.VariableType;
 import unisinos.tradutores.java2python.gramatica.Java8BaseListener;
 import unisinos.tradutores.java2python.gramatica.Java8Parser;
@@ -30,44 +30,69 @@ import unisinos.tradutores.java2python.gramatica.Java8Parser.BlockStatementsCont
 import unisinos.tradutores.java2python.gramatica.Java8Parser.EnumDeclarationContext;
 import unisinos.tradutores.java2python.gramatica.Java8Parser.ExpressionContext;
 import unisinos.tradutores.java2python.gramatica.Java8Parser.ForInitContext;
+import unisinos.tradutores.java2python.gramatica.Java8Parser.ForStatementContext;
 import unisinos.tradutores.java2python.gramatica.Java8Parser.ForUpdateContext;
 import unisinos.tradutores.java2python.gramatica.Java8Parser.FormalParameterListContext;
+import unisinos.tradutores.java2python.gramatica.Java8Parser.MethodDeclarationContext;
 import unisinos.tradutores.java2python.gramatica.Java8Parser.NormalClassDeclarationContext;
 
 @Getter
 public class JavaBaseListenerImpl extends Java8BaseListener {
 
     private List<Class> classes = new ArrayList<>();
-    private Class.ClassBuilder currentClass;
-    private ClassBody.ClassBodyBuilder currentBodyClass;
-    private Constructor.ConstructorBuilder currentConstructor;
-    private Method.MethodBuilder currentMethod;
-//    private Scope currentScope; //vai lidar com o scopo atual, então vai adicionar sempre aqui e essa classe sabe quem é o scope
+    private List<Element> elements;
+    private ScopeLevel scope = new ScopeLevel();
 
     @Override
     public void enterNormalClassDeclaration(final NormalClassDeclarationContext ctx) {
-        if (nonNull(currentMethod)) {
-            currentBodyClass.method(currentMethod.build());
-        }
-        if (nonNull(currentClass)) {
-            classes.add(currentClass.body(currentBodyClass.build()).build());
-        }
-        currentClass = Class.builder().enumClass(false).name(ctx.children.get(2).getText());
-        currentBodyClass = ClassBody.builder();
-        System.out.println("CLASSE: " + currentClass.build());
+        this.elements = new ArrayList<>();
+
+        /*
+          Está sendo criado uma classe com uma lista vazia, mas essa lista será atualizada conforme o processo vai
+          acontecendo.
+         */
+        final Class clazz = Class.builder()
+            .enumClass(false)
+            .name(ctx.children.get(2).getText())
+            .elements(elements)
+            .build();
+
+        classes.add(clazz);
+
+        this.scope.up();
+
+        System.out.println("CLASSE: " + clazz);
+    }
+
+    @Override
+    public void exitNormalClassDeclaration(final NormalClassDeclarationContext ctx) {
+        this.scope.down();
     }
 
     @Override
     public void enterEnumDeclaration(final EnumDeclarationContext ctx) {
-        if (nonNull(currentMethod)) {
-            currentBodyClass.method(currentMethod.build());
-        }
-        if (nonNull(currentClass)) {
-            classes.add(currentClass.body(currentBodyClass.build()).build());
-        }
-        currentClass = Class.builder().enumClass(true).name(ctx.children.get(1).getText());
-        currentBodyClass = ClassBody.builder();
-        System.out.println("CLASSE ENUM: " + currentClass.build());
+        this.elements = new ArrayList<>();
+
+        /*
+          Está sendo criado uma classe com uma lista vazia, mas essa lista será atualizada conforme o processo vai
+          acontecendo.
+         */
+        final Class clazz = Class.builder()
+            .enumClass(false)
+            .name(ctx.children.get(2).getText())
+            .elements(elements)
+            .build();
+
+        classes.add(clazz);
+
+        this.scope.up();
+
+        System.out.println("ENUM: " + clazz);
+    }
+
+    @Override
+    public void exitEnumDeclaration(final EnumDeclarationContext ctx) {
+        this.scope.down();
     }
 
     @Override
@@ -76,11 +101,10 @@ public class JavaBaseListenerImpl extends Java8BaseListener {
         final VariableType returnType = VariableType
             .fromText(ctx.getParent().getParent().getChild(1).getChild(0).getText());
 
-        currentMethod = Method.builder()
+        final Method.MethodBuilder methodBuilder = Method.builder()
             .modifier(modifier)
             .returnType(returnType)
-            .name(ctx.getChild(0).getText())
-        ;
+            .name(ctx.getChild(0).getText());
 
         if (ctx.getChild(2) instanceof FormalParameterListContext) {
             final Param.ParamBuilder param = Param.builder();
@@ -90,40 +114,23 @@ public class JavaBaseListenerImpl extends Java8BaseListener {
                     temp.add(child.getText());
                     return;
                 }
-                currentMethod.param(param.name(temp.get(1)).type(VariableType.fromText(temp.get(0))).build());
+                methodBuilder.param(param.name(temp.get(1)).type(VariableType.fromText(temp.get(0))).build());
                 temp.clear();
             });
-            currentMethod.param(param.name(temp.get(1)).type(VariableType.fromText(temp.get(0))).build());
+            methodBuilder.param(param.name(temp.get(1)).type(VariableType.fromText(temp.get(0))).build());
         }
-        currentBodyClass.method(currentMethod.build());
-        System.out.println("\tMETHOD:  " + currentMethod.build());
+
+        final Method method = methodBuilder.build();
+
+        this.elements.add(method);
+        System.out.println("\tMETHOD:  " + method);
+
+        this.scope.up();
     }
 
-    private void forChildrenOf(final ParseTree parent, final Consumer<TerminalNodeImpl> consumer) {
-        for (int i = 0; i < parent.getChildCount(); i++) {
-            ParseTree child = parent.getChild(i);
-            if (child instanceof TerminalNodeImpl) {
-                consumer.accept((TerminalNodeImpl) child);
-                continue;
-            }
-            forChildrenOf(child, consumer);
-        }
-    }
-
-    private void printa_children(final List<ParseTree> children) {
-        children.forEach(this::printa_child);
-        System.out.println();
-    }
-
-
-    private void printa_child(final ParseTree c) {
-        if (c instanceof TerminalNodeImpl) {
-            System.out.print(c.getText() + " ");
-        } else {
-            for (int i = 0; i < c.getChildCount(); i++) {
-                printa_child(c.getChild(i));
-            }
-        }
+    @Override
+    public void exitMethodDeclaration(final MethodDeclarationContext ctx) {
+        this.scope.down();
     }
 
 
@@ -160,6 +167,7 @@ public class JavaBaseListenerImpl extends Java8BaseListener {
 
     @Override
     public void enterForStatement(Java8Parser.ForStatementContext ctx) {
+
         final ForInitContext initContext = (ForInitContext) ctx.getChild(0).getChild(2);
         final Param forInitVariable = Param.builder()
             .type(VariableType.fromText(initContext.getChild(0).getChild(0).getText()))
@@ -214,9 +222,17 @@ public class JavaBaseListenerImpl extends Java8BaseListener {
             .keepRunningCondition(forCondition)
             .updateVariables(forUpdate)
             .body(forBody.build())
+            .scope(this.scope.currentLevel())
             .build();
 
-            System.out.println("\tFOR:  " + forRepetitionStructure);
+        this.elements.add(forRepetitionStructure);
+        this.scope.up();
+        System.out.println("\tFOR:  " + forRepetitionStructure);
+    }
+
+    @Override
+    public void exitForStatement(final ForStatementContext ctx) {
+        this.scope.down();
     }
 
     @Override
@@ -277,12 +293,35 @@ public class JavaBaseListenerImpl extends Java8BaseListener {
     }
 
     public List<Class> build() {
-        //adiciona os últimos valores para a última classe
-
-        if (nonNull(currentClass)) {
-            classes.add(currentClass.body(currentBodyClass.build()).build());
-        }
-        System.out.println(classes);
         return classes;
     }
+
+
+    private void forChildrenOf(final ParseTree parent, final Consumer<TerminalNodeImpl> consumer) {
+        for (int i = 0; i < parent.getChildCount(); i++) {
+            ParseTree child = parent.getChild(i);
+            if (child instanceof TerminalNodeImpl) {
+                consumer.accept((TerminalNodeImpl) child);
+                continue;
+            }
+            forChildrenOf(child, consumer);
+        }
+    }
+
+    private void printa_children(final List<ParseTree> children) {
+        children.forEach(this::printa_child);
+        System.out.println();
+    }
+
+
+    private void printa_child(final ParseTree c) {
+        if (c instanceof TerminalNodeImpl) {
+            System.out.print(c.getText() + " ");
+        } else {
+            for (int i = 0; i < c.getChildCount(); i++) {
+                printa_child(c.getChild(i));
+            }
+        }
+    }
+
 }

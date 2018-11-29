@@ -5,16 +5,17 @@ import java.util.List;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Singular;
-import lombok.ToString;
 
 @Data
 @Builder
-public class Constructor {
+public class Constructor extends Element {
 
     private final String name;
     @Singular
     private final List<Param> params;
     @Singular
     private final List<Expression> expressions;
+    private final Integer scope = 1;
+
 
 }

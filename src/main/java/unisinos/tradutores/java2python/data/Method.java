@@ -9,11 +9,10 @@ import unisinos.tradutores.java2python.domain.VariableType;
 
 @Data
 @Builder
-public class Method {
+public class Method extends Element {
 
     /**
-     * true - public
-     * false - private
+     * true - public false - private
      */
     private final boolean modifier;
     private final VariableType returnType;
@@ -22,5 +21,6 @@ public class Method {
     private final List<Param> params;
     @Singular
     private final List<Expression> expressions;
+    private final Integer scope = 1;
 
 }
