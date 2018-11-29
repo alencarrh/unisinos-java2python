@@ -28,7 +28,7 @@ public class ClasseExemplo5 {
 
     @Override
     public String toString() {
-        return param1 + param2 + param3;
+        return param1;
     }
 }
 

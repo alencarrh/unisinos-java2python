@@ -53,7 +53,6 @@ public class JavaBaseListenerImpl extends Java8BaseListener {
                 }
             }
             classes.add(result);
-//            System.out.println("CLASSE: " + result);
         });
     }
 
@@ -62,7 +61,6 @@ public class JavaBaseListenerImpl extends Java8BaseListener {
         this.scope.up();
         classBuilder.build(ctx, result -> {
             classes.add(result);
-//            System.out.println("ENUM: " + result);
         });
     }
 

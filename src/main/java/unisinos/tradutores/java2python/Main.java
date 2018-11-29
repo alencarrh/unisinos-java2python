@@ -1,6 +1,10 @@
 package unisinos.tradutores.java2python;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.PrintStream;
+import java.io.PrintWriter;
 import java.nio.file.Paths;
 import java.util.List;
 
@@ -9,6 +13,7 @@ import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
+import org.apache.commons.io.FileUtils;
 
 import unisinos.tradutores.java2python.data.Class;
 import unisinos.tradutores.java2python.gramatica.Java8Lexer;
@@ -42,6 +47,14 @@ public class Main {
 
         System.out.println("\n\n:::::: RESULTADO\n\n");
 
-        classes.forEach(System.out::println);
+        final StringBuilder sb = new StringBuilder();
+
+        classes.forEach(clazz -> sb.append(clazz.toString()));
+
+        System.out.println(sb.toString());
+        try (PrintStream out = new PrintStream(new FileOutputStream(inputFile + ".py"))) {
+            out.println(sb.toString());
+        }
+
     }
 }

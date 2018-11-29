@@ -5,18 +5,17 @@ public class TesteClass {
     private String nome;
     private int quantidade;
 
-    public String method1() {
+    public void method1() {
         int a = 1;
         int b = 10;
 
         for (int i = 50; i < 0; i += 1) {
             a = a + b;
         }
-
-        return "abc";
     }
 
     public String method2(int a, int b) {
+        System.out.println("teste123");
 
         while (a < b) {
             a += 1;
@@ -25,7 +24,6 @@ public class TesteClass {
         if (b == a) {
             return "teste";
         }
-        System.out.println("teste123");
 
         return "asdasd";
     }
