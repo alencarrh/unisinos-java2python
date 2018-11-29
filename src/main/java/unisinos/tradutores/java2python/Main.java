@@ -40,6 +40,8 @@ public class Main {
 
         List<Class> classes = extractor.build();
 
+        System.out.println("\n\n:::::: RESULTADO\n\n");
+
         classes.forEach(System.out::println);
     }
 }

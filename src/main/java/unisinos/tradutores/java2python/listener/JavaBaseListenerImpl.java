@@ -54,7 +54,6 @@ public class JavaBaseListenerImpl extends Java8BaseListener {
         final Class clazz = Class.builder()
             .enumClass(false)
             .name(ctx.children.get(2).getText())
-            .elements(elements)
             .build();
 
         classes.add(clazz);
@@ -78,8 +77,8 @@ public class JavaBaseListenerImpl extends Java8BaseListener {
           acontecendo.
          */
         final Class clazz = Class.builder()
-            .enumClass(false)
-            .name(ctx.children.get(2).getText())
+            .enumClass(true)
+            .name(ctx.children.get(1).getText())
             .elements(elements)
             .build();
 
@@ -122,7 +121,7 @@ public class JavaBaseListenerImpl extends Java8BaseListener {
 
         final Method method = methodBuilder.build();
 
-        this.elements.add(method);
+        addElement(method);
         System.out.println("\tMETHOD:  " + method);
 
         this.scope.up();
@@ -225,7 +224,7 @@ public class JavaBaseListenerImpl extends Java8BaseListener {
             .scope(this.scope.currentLevel())
             .build();
 
-        this.elements.add(forRepetitionStructure);
+        addElement(forRepetitionStructure);
         this.scope.up();
         System.out.println("\tFOR:  " + forRepetitionStructure);
     }
@@ -322,6 +321,10 @@ public class JavaBaseListenerImpl extends Java8BaseListener {
                 printa_child(c.getChild(i));
             }
         }
+    }
+
+    private void addElement(final Element element) {
+        this.classes.get(this.classes.size() - 1).addElement(element);
     }
 
 }
