@@ -42,9 +42,6 @@ public class Main {
 
         List<Class> classes = extractor.build();
 
-        Translator translator = new PythonTranslator();
-        translator.setClasses(classes);
-
-        translator.translate();
+        classes.forEach(System.out::println);
     }
 }
