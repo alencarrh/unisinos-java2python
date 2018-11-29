@@ -35,7 +35,15 @@ public class Class {
 
     public String toString() {
         final StringBuilder result = new StringBuilder();
-        result.append("class ").append(name).append(":\n");
+        if (enumClass) {
+            result.append("\nfrom enum import Enum\n");
+        }
+        result.append("class ").append(name).append("");
+        if (enumClass) {
+            result.append("(Enum)");
+        }
+        result.append(":\n");
+
         if (nonNull(this.atr)) {
             atr.forEach(a -> {
                 result.append(a).append("\n");
@@ -49,8 +57,8 @@ public class Class {
 
         return result.toString()
             .replace("null", "None")
-            .replace("--", "-= 1")
-            .replace("++", "+= 1")
+            .replace("--", " -= 1")
+            .replace("++", " += 1")
             .replace("System.out.println(", "print(");
     }
 

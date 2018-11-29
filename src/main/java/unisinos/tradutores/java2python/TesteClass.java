@@ -5,13 +5,15 @@ public class TesteClass {
     private String nome;
     private int quantidade;
 
-    public void method1() {
+    public String method1() {
         int a = 1;
         int b = 10;
 
         for (int i = 50; i < 0; i += 1) {
             a = a + b;
         }
+
+        return "abc";
     }
 
     public String method2(int a, int b) {
@@ -20,9 +22,12 @@ public class TesteClass {
             a += 1;
         }
 
+        if (b == a) {
+            return "teste";
+        }
         System.out.println("teste123");
 
-        return "teste";
+        return "asdasd";
     }
 
     public void method3(int a, int b) {
