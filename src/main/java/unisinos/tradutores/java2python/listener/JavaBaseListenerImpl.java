@@ -216,7 +216,6 @@ public class JavaBaseListenerImpl extends Java8BaseListener {
             .body(forBody.build())
             .build();
 
-        currentMethod.
             System.out.println("\tFOR:  " + forRepetitionStructure);
     }
 
