@@ -7,8 +7,9 @@ import lombok.Data;
 @Builder
 public class IfCondition extends Element {
 
-    public final String condition;
-//    public final Body body
-//    public final IfCondition elseCondition;
+    private final String condition;
+    public final GenericBody body;
+    private final Integer scope;
+    public final IfCondition elseCondition;
 
 }

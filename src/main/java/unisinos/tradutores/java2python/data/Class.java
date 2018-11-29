@@ -29,7 +29,7 @@ public class Class {
         if (isNull(this.atr)) {
             this.atr = new ArrayList<>();
         }
-        this.atr.add("    " + name + " = none");
+        this.atr.add("    " + name + " = None");
     }
 
     public String toString(){

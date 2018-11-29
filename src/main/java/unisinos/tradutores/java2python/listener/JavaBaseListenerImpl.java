@@ -17,6 +17,7 @@ import unisinos.tradutores.java2python.gramatica.Java8Parser.ForStatementContext
 import unisinos.tradutores.java2python.gramatica.Java8Parser.MethodDeclarationContext;
 import unisinos.tradutores.java2python.gramatica.Java8Parser.NormalClassDeclarationContext;
 import unisinos.tradutores.java2python.gramatica.Java8Parser.FieldDeclarationContext;
+import unisinos.tradutores.java2python.listener.builder.BlockBuilder;
 import unisinos.tradutores.java2python.listener.builder.ClassBuilder;
 import unisinos.tradutores.java2python.listener.builder.ForBuilder;
 import unisinos.tradutores.java2python.listener.builder.IfBuilder;
@@ -32,6 +33,7 @@ public class JavaBaseListenerImpl extends Java8BaseListener {
     private final MethodBuilder methodBuilder = MethodBuilder.builder().scope(scope).build();
     private final ForBuilder forBuilder = ForBuilder.builder().scope(scope).build();
     private final IfBuilder ifBuilder = IfBuilder.builder().scope(scope).build();
+    private final BlockBuilder blockBuilder = BlockBuilder.builder().scope(scope).build();
 
 
     @Override
@@ -83,14 +85,14 @@ public class JavaBaseListenerImpl extends Java8BaseListener {
     @Override
     public void enterIfThenStatement(Java8Parser.IfThenStatementContext ctx) {
         ifBuilder.build(ctx, result -> {
-            System.out.println("\tIF THEN:  " + ctx.getText());
+            System.out.println("\tIF THEN:  " + result);
             addElement(result);
         });
     }
 
     @Override
     public void enterIfThenElseStatement(Java8Parser.IfThenElseStatementContext ctx) {
-//        System.out.println("\tIF THEN ELSE:  " + ctx.getText());
+        System.out.println("\tIF THEN ELSE:  " + ctx.getText());
 //        System.out.print("\t\tDETAILS: ");
 //        printa_children(ctx.children);
     }
@@ -128,7 +130,12 @@ public class JavaBaseListenerImpl extends Java8BaseListener {
 
     @Override
     public void enterBlockStatements(Java8Parser.BlockStatementsContext ctx) {
-//        System.out.println("\tBLOCK:  " + ctx.getText());
+        blockBuilder.build(ctx, result -> {
+            result.forEach(this::addElement);
+            result.forEach(_result ->{
+                System.out.println("BLOCK: " + _result);
+            });
+        });
 //        System.out.print("\t\tDETAILS: ");
 //        printa_children(ctx.children);
     }

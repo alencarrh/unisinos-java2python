@@ -1,5 +1,5 @@
 package unisinos.tradutores.java2python.data;
 
-public interface GenericStatement {
+public abstract class GenericStatement extends Element{
 
 }

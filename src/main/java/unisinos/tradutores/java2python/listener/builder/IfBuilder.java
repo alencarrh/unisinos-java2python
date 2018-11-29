@@ -1,7 +1,5 @@
 package unisinos.tradutores.java2python.listener.builder;
 
-import static unisinos.tradutores.java2python.listener.builder.BuilderUtils.getFirstChildN;
-
 import java.util.function.Consumer;
 
 import lombok.Builder;
@@ -15,13 +13,16 @@ public class IfBuilder {
     private final ScopeLevel scope;
 
     public void build(final Java8Parser.IfThenStatementContext ctx, final Consumer<IfCondition> callback) {
-
         final IfCondition ifCondition = IfCondition.builder()
-            .condition(
-                getFirstChildN(ctx.getChild(2), 7).getText())
+            .condition(ctx.getChild(2).getText())
+            .scope(scope.currentLevel())
             .build();
 
-        System.out.println(ctx);
+
+
+
+//        System.out.println(ctx);
+        callback.accept(ifCondition);
 
     }
 }

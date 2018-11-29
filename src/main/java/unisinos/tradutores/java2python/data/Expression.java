@@ -5,8 +5,9 @@ import lombok.Data;
 
 @Data
 @Builder
-public class Expression extends Element implements GenericStatement {
+public class Expression extends GenericStatement {
 
     private final String expression;
+    private final Integer scope;
 
 }
