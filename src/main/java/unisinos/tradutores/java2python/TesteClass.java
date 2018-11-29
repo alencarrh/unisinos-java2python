@@ -32,7 +32,7 @@ public class TesteClass {
             for (int i = 0; i < b; i++) {
                 c = c + b;
                 int x = 1;
-                for (int l = 0; l < i; l++) {
+                for (int l = 0; l < x; l++) {
                     b += 1;
                 }
                 x = c * -2;
