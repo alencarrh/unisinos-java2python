@@ -25,9 +25,6 @@ public class BlockBuilder {
         final List<GenericStatement> expressions = new ArrayList<>();
 
         ctx.children.forEach(child -> {
-
-//            ctx.getText()
-
             ParseTree childChild = child.getChild(0);
             if (childChild instanceof LocalVariableDeclarationStatementContext) {
                 VariableType type = VariableType.fromText(childChild.getChild(0).getChild(0).getText());

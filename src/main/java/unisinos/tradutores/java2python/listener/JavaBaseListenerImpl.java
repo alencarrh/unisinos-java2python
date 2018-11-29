@@ -45,7 +45,7 @@ public class JavaBaseListenerImpl extends Java8BaseListener {
                 }
             }
             classes.add(result);
-            System.out.println("CLASSE: " + result);
+//            System.out.println("CLASSE: " + result);
         });
         this.scope.up();
     }
@@ -54,7 +54,7 @@ public class JavaBaseListenerImpl extends Java8BaseListener {
     public void enterEnumDeclaration(final EnumDeclarationContext ctx) {
         classBuilder.build(ctx, result -> {
             classes.add(result);
-            System.out.println("ENUM: " + result);
+//            System.out.println("ENUM: " + result);
         });
         this.scope.up();
     }
@@ -67,7 +67,7 @@ public class JavaBaseListenerImpl extends Java8BaseListener {
     public void enterMethodDeclarator(Java8Parser.MethodDeclaratorContext ctx) {
         methodBuilder.build(ctx, result -> {
             addElement(result);
-            System.out.println("\tMETHOD:  " + result);
+//            System.out.println("\tMETHOD:  " + result);
         });
         this.scope.up();
     }
@@ -76,7 +76,7 @@ public class JavaBaseListenerImpl extends Java8BaseListener {
     public void enterForStatement(Java8Parser.ForStatementContext ctx) {
         forBuilder.build(ctx, result -> {
             addElement(result);
-            System.out.println("\tFOR:  " + result);
+//            System.out.println("\tFOR:  " + result);
         });
         this.scope.up();
     }
@@ -85,14 +85,14 @@ public class JavaBaseListenerImpl extends Java8BaseListener {
     @Override
     public void enterIfThenStatement(Java8Parser.IfThenStatementContext ctx) {
         ifBuilder.build(ctx, result -> {
-            System.out.println("\tIF THEN:  " + result);
+//            System.out.println("\tIF THEN:  " + result);
             addElement(result);
         });
     }
 
     @Override
     public void enterIfThenElseStatement(Java8Parser.IfThenElseStatementContext ctx) {
-        System.out.println("\tIF THEN ELSE:  " + ctx.getText());
+//        System.out.println("\tIF THEN ELSE:  " + ctx.getText());
 //        System.out.print("\t\tDETAILS: ");
 //        printa_children(ctx.children);
     }
@@ -132,9 +132,9 @@ public class JavaBaseListenerImpl extends Java8BaseListener {
     public void enterBlockStatements(Java8Parser.BlockStatementsContext ctx) {
         blockBuilder.build(ctx, result -> {
             result.forEach(this::addElement);
-            result.forEach(_result ->{
-                System.out.println("BLOCK: " + _result);
-            });
+//            result.forEach(_result ->{
+//                System.out.println("BLOCK: " + _result);
+//            });
         });
 //        System.out.print("\t\tDETAILS: ");
 //        printa_children(ctx.children);

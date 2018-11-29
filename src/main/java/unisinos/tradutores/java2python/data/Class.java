@@ -2,6 +2,7 @@ package unisinos.tradutores.java2python.data;
 
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
+import static unisinos.tradutores.java2python.domain.Space.getSpaces;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,23 +26,27 @@ public class Class {
         this.elements.add(element);
     }
 
-    public void addAtr(String name){
+    public void addAtr(String name) {
         if (isNull(this.atr)) {
             this.atr = new ArrayList<>();
         }
-        this.atr.add("    " + name + " = None");
+        this.atr.add(getSpaces(1) + name + " = None");
     }
 
-    public String toString(){
+    public String toString() {
         final StringBuilder result = new StringBuilder();
-        result.append("class " + name + ":\n");
+        result.append("class ").append(name).append(":\n");
         if (nonNull(this.atr)) {
             atr.forEach(a -> {
-                result.append(a + "\n");
+                result.append(a).append("\n");
             });
         }
 
-      return result.toString();
+        this.elements.forEach(e -> {
+            result.append(e.toString()).append("\n");
+        });
+
+        return result.toString();
     }
 
 }

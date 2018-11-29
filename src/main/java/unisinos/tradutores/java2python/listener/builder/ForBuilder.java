@@ -57,9 +57,9 @@ public class ForBuilder {
             GenericStatement genericExpression = null;
             final String[] expressionParts = expression.split(" ");
 
-            if (expressionParts[1].equals("=")) {
+            if (expressionParts.length > 1 && expressionParts[1].equals("=")) {
                 genericExpression = Expression.builder().expression(expression).build();
-            } else if (expressionParts[2].equals("=")) {
+            } else if (expressionParts.length > 1 && expressionParts[2].equals("=")) {
                 //é um Param
                 genericExpression = Param.builder()
                     .type(VariableType.fromText(expressionParts[0]))
@@ -70,7 +70,7 @@ public class ForBuilder {
             }
 
             if (nonNull(genericExpression)) {
-                forBody.expressoin(genericExpression);
+                forBody.expression(genericExpression);
             }
 
         });

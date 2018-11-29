@@ -1,9 +1,10 @@
 package unisinos.tradutores.java2python.data;
 
+import static java.util.Objects.nonNull;
+
 import lombok.Builder;
 import lombok.Data;
-
-import static java.util.Objects.nonNull;
+import unisinos.tradutores.java2python.domain.Space;
 
 @Data
 @Builder
@@ -15,18 +16,17 @@ public class RepetitionStructure extends Element {
     private final GenericBody body;
     private final Integer scope;
 
-    public String toString(){
+    public String toString() {
         final StringBuilder body = new StringBuilder();
         if (nonNull(this.body)) {
-            this.body.getExpressoins().forEach(a -> {
-                body.append("    " + a + "\n");
+            this.body.getExpressions().forEach(a -> {
+                body.append(Space.getSpaces(scope)).append(a).append("\n");
             });
         }
 
-
         return this.initVariables.getName() + " = " + this.initVariables.getInitValue() + "\n" +
-                "while" + this.getKeepRunningCondition() +
-                body +
-                getUpdateVariables().getExpression();
+            "while" + this.getKeepRunningCondition() +
+            body +
+            getUpdateVariables().getExpression();
     }
 }

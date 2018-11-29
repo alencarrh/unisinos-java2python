@@ -18,27 +18,32 @@ public class TesteClass {
         int b = 10;
         if (a == 1) {
             a = a * 2;
-        } else {
-            a = a + 1;
         }
 
         if (a == b) {
             b = b * 3;
             if (b == 10) {
                 a = 2;
+                int c = a + b;
+                if (c == 15) {
+                    c *= 2;
+                }
+                for (int i = c; i < 0; i--) {
+                    a = a + b;
+                }
             }
         }
     }
 
     public void method4(String a, int b, int c, Double d, TipoTeste tipo) {
-        if (a.equals("b")) {
+        if (c == b) {
             for (int i = 0; i < b; i++) {
                 c = c + b;
                 int x = 1;
+                x = c * 2;
                 for (int l = 0; l < x; l++) {
                     b += 1;
                 }
-                x = c * -2;
             }
         }
 
