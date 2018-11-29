@@ -44,10 +44,11 @@ public class Method extends Element {
         if (!modifier) {
             sb.append("__");
         }
-        sb.append(name).append("(");
+        sb.append(name).append("(self");
 
         if (nonNull(params) && !params.isEmpty()) {
-            sb.append(params.get(0).toggleScope().toString());
+
+            sb.append(",").append(params.get(0).toggleScope().toString());
 
             for (int i = 1; i < params.size(); i++) {
                 sb.append(", ").append(params.get(i).toggleScope().toString());

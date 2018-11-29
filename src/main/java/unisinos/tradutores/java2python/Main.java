@@ -45,7 +45,7 @@ public class Main {
 
         List<Class> classes = extractor.build();
 
-        System.out.println("\n\n:::::: RESULTADO\n\n");
+//        System.out.println("\n\n:::::: RESULTADO\n\n");
 
         final StringBuilder sb = new StringBuilder();
 
