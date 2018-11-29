@@ -2,6 +2,8 @@ package unisinos.tradutores.java2python.listener;
 
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import org.antlr.v4.runtime.tree.ParseTree;
@@ -99,9 +101,7 @@ public class JavaBaseListenerImpl extends Java8BaseListener {
 
     @Override
     public void enterBlockStatements(Java8Parser.BlockStatementsContext ctx) {
-        blockBuilder.build(ctx, result -> {
-            result.forEach(this::addElement);
-        });
+        blockBuilder.build(ctx, this::addElement);
     }
 
 

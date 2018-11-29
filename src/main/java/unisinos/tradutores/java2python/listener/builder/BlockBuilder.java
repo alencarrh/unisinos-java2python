@@ -21,12 +21,17 @@ public class BlockBuilder {
 
     private final ScopeLevel scope;
 
-    public void build(final Java8Parser.BlockStatementsContext ctx, final Consumer<List<GenericStatement>> callback) {
-        final List<GenericStatement> expressions = new ArrayList<>();
-
+    public void build(final Java8Parser.BlockStatementsContext ctx, final Consumer<GenericStatement> callback) {
         ctx.children.forEach(child -> {
             ParseTree childChild = child.getChild(0);
-            if (childChild instanceof LocalVariableDeclarationStatementContext) {
+            if (childChild.getChild(0) instanceof StatementWithoutTrailingSubstatementContext) {
+                callback.accept(Expression.builder()
+                    .expression(childChild.getChild(0).getText().replace(";", ""))
+                    .scope(scope.currentLevel())
+                    .build());
+
+
+            } else if (childChild instanceof LocalVariableDeclarationStatementContext) {
                 VariableType type = VariableType.fromText(childChild.getChild(0).getChild(0).getText());
                 final Param param = Param.builder()
                     .type(type)
@@ -35,20 +40,12 @@ public class BlockBuilder {
                     .scope(scope.currentLevel())
                     .build();
 
-                expressions.add(param);
+                callback.accept(param);
 
-            } else if (childChild.getChild(0) instanceof StatementWithoutTrailingSubstatementContext) {
-                expressions.add(Expression.builder()
-                    .expression(childChild.getChild(0).getText().replace(";", ""))
-                    .scope(scope.currentLevel())
-                    .build());
             }
 
         });
-
-        callback.accept(expressions);
     }
-
 
 }
 
